@@ -106,12 +106,9 @@
 <div class="controls">
   <select id="locationSelect">
     <option value="35.561,139.716" selected>東京都 大田区</option>
-    <option value="35.609,139.730">東京都 品川区</option>
-    <option value="35.689,139.691">東京都 新宿区</option>
-    <option value="35.443,139.638">神奈川県 横浜市</option>
-    <option value="34.693,135.502">大阪府 大阪市</option>
-    <option value="43.062,141.354">北海道 札幌市</option>
-    <option value="26.212,127.681">沖縄県 那覇市</option>
+    <option value="35.6619,139.7024">東京都 渋谷区</option>
+    <option value="35.4437,139.6380">神奈川県 横浜市</option>
+    <option value="36.5551,139.8826">栃木県 宇都宮市</option>
   </select>
   <button id="btnGps" class="icon-btn" title="現在地を取得">📍</button>
   <button id="btnRefresh" class="icon-btn" title="更新">🔄</button>
@@ -201,7 +198,7 @@
     return days[new Date(iso).getDay()];
   }
 
-  // 1. 動的背景の更新
+  // 動的背景の更新
   function updateBackground(code) {
     let bgVar = 'var(--bg-cloudy)';
     if (code <= 2) bgVar = 'var(--bg-sunny)';
@@ -217,7 +214,6 @@
     
     try {
       const url = new URL("https://api.open-meteo.com/v1/forecast");
-      // 5. hourlyにuv_indexを追加
       const params = {
         latitude: currentLat, longitude: currentLon, timezone: "Asia/Tokyo",
         current_weather: "true",
@@ -316,7 +312,7 @@
     }
   }
 
-  // 4. SVGグラフと週間リストの描画
+  // SVGグラフと週間リストの描画
   function renderWeekly() {
     graphContainer.classList.remove("hide");
     listFooter.textContent = "単位: °C (Open-Meteo)";
@@ -391,7 +387,7 @@
     renderUI();
   }
 
-  // 2. エリア変更イベント
+  // エリア変更イベント
   locationSelect.addEventListener("change", (e) => {
     const [lat, lon] = e.target.value.split(",");
     currentLat = parseFloat(lat); currentLon = parseFloat(lon);
@@ -399,7 +395,7 @@
     fetchData();
   });
 
-  // 2. 現在地(GPS)取得イベント
+  // 現在地(GPS)取得イベント
   btnGps.addEventListener("click", () => {
     if (!navigator.geolocation) return alert("お使いのブラウザは位置情報に対応していません");
     btnGps.textContent = "⏳";
@@ -407,6 +403,7 @@
       (pos) => {
         currentLat = pos.coords.latitude; currentLon = pos.coords.longitude;
         locationName = "現在地";
+        
         // selectの選択を外す
         locationSelect.selectedIndex = -1;
         
